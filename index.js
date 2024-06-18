@@ -202,25 +202,25 @@ document.addEventListener('DOMContentLoaded', function () {
                         // This line will execute after the timeout
                         setTimeout(() => {
                             event.target.src = './assets/images/GF.png';
-                        }, 800);
+                        }, 2500);
                         if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1"){
                         setTimeout(() => {
                             arrow.src = cueArray[blockTrails]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
-                        }, 400);
+                        }, 2500);
                         }
                         else if((exp_no==="0" && blockTrails>20) || exp_no=="2")
                         {
                             
                             setTimeout(() => {
                                 arrow.src = cueArray[blockTrails+1]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
-                            }, 400);
+                            }, 2500);
 
                         }
                         arrow.style.visibility = "visible";
                         setTimeout(() => {
                             door1.addEventListener('click', handleDoorClick);
                             door2.addEventListener('click', handleDoorClick);
-                        }, 800);
+                        }, 2500);
                         
                         trialStartTime = new Date().getTime();
                     }, 1200); 
@@ -237,20 +237,20 @@ document.addEventListener('DOMContentLoaded', function () {
                         if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1"){
                             setTimeout(() => {
                                 arrow.src = cueArray[blockTrails]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
-                            }, 400);
+                            }, 2500);
                             }
                             else if((exp_no==="0" && blockTrails>20) || exp_no=="2")
                             {
                                 setTimeout(() => {
                                     arrow.src = cueArray[blockTrails+1]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
-                                }, 400);
+                                }, 2500);
     
                             }
                             arrow.style.visibility = "visible";
                         setTimeout(() => {
                             door1.addEventListener('click', handleDoorClick);
                             door2.addEventListener('click', handleDoorClick);
-                        }, 800);
+                        }, 2500);
                         trialStartTime = new Date().getTime();
                     }, 1000);
                 }
@@ -266,24 +266,24 @@ document.addEventListener('DOMContentLoaded', function () {
                         // This line will execute after the timeout
                         setTimeout(() => {
                             event.target.src = './assets/images/GF.png';
-                        }, 800);
+                        }, 2500);
                         if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1"){
                             setTimeout(() => {
                                 arrow.src = cueArray[blockTrails]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
-                            }, 400);
+                            }, 2500);
                             }
                             else if((exp_no==="0" && blockTrails>20) || exp_no=="2")
                             {
                                 setTimeout(() => {
                                     arrow.src = cueArray[blockTrails+1]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
-                                }, 400);
+                                }, 2500);
     
                             }
                             arrow.style.visibility = "visible";
                         setTimeout(() => {
                             door1.addEventListener('click', handleDoorClick);
                             door2.addEventListener('click', handleDoorClick);
-                        }, 800);
+                        }, 2500);
                         
                         trialStartTime = new Date().getTime();
                     }, 1200); 
@@ -296,52 +296,52 @@ document.addEventListener('DOMContentLoaded', function () {
                         // This line will execute after the timeout
                         setTimeout(() => {
                             event.target.src = './assets/images/GF.png';
-                        }, 800);
+                        }, 2500);
                         if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1"){
                             setTimeout(() => {
                                 arrow.src = cueArray[blockTrails]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
-                            }, 400);
+                            }, 2500);
                             }
                             else if((exp_no==="0" && blockTrails>20) || exp_no=="2")
                             {
                                 setTimeout(() => {
                                     arrow.src = cueArray[blockTrails+1]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
-                                }, 400);
+                                }, 2500);
     
                             }
                         arrow.style.visibility = "visible";
                         setTimeout(() => {
                             door1.addEventListener('click', handleDoorClick);
                             door2.addEventListener('click', handleDoorClick);
-                        }, 800);
+                        }, 2500);
                         trialStartTime = new Date().getTime();
                     }, 1000);
                 }
             }
-            if (blockTrails <= 60) {
+            if (blockTrails <= 59) {
                 boxProbability = 0.8;
-                if (blockTrails <= 30) {
+                if (blockTrails <= 29) {
                     cueProbability = 0.75;
-                } else if (blockTrails > 30 && blockTrails <= 45) {
+                } else if (blockTrails > 29 && blockTrails <= 44) {
                     cueProbability = 0.8;
                 } else {
                     cueProbability = 0.2;
                 }
-            } else if (blockTrails <= 80) {
+            } else if (blockTrails <= 79) {
                 boxProbability = 0.2;
-                if (blockTrails <= 75) {
+                if (blockTrails <= 74) {
                     cueProbability = 0.8;
                 } else {
                     cueProbability = 0.2;
                 }
-            } else if (blockTrails <= 100) {
+            } else if (blockTrails <= 99) {
                 boxProbability = 0.8;
-                if (blockTrails <= 90) {
+                if (blockTrails <= 89) {
                     cueProbability = 0.2;
                 } else {
                     cueProbability = 0.15;
                 }
-            } else if (blockTrails <= 120) {
+            } else if (blockTrails <= 119) {
                 boxProbability = 0.2;
                 cueProbability = 0.15;
             }
@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
 
             console.log("ChoosedBox:",doorNumber === "2"?"Left":"Right","CueShowed:",cueArray[blockTrails],cueArray[blockTrails]===1?"Left":"Right","RewardBox:",tempArray[blockTrails] ===1?"Left":"Right", " Rewards:", reward, boxProbability, cueProbability );
-            experimentRecords.push({ChoosedBox:doorNumber === "2"?"Left":"Right",CueShowed:cueArray[blockTrails]===1?"Left":"Right", RewardBox:tempArray[blockTrails] ===1?"Left":"Right",Rewards: reward, ReactionTime: reactionTime / 1000, BoxProb: boxProbability, CueProb: cueProbability });
+            experimentRecords.push({TrailNo:blockTrails+1,ChoosedBox:doorNumber === "2"?"Left":"Right",CueShowed:cueArray[blockTrails]===1?"Left":"Right", RewardBox:tempArray[blockTrails] ===1?"Left":"Right",Rewards: reward, ReactionTime: reactionTime / 1000, BoxProb: boxProbability, CueProb: cueProbability });
             
             blockTrails++;
    

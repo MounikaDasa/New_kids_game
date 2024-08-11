@@ -49,9 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
-            }
-            
-            
+            }      
             
             return array;
         }
@@ -97,41 +95,34 @@ document.addEventListener('DOMContentLoaded', function () {
     // randomArray = randomArray.concat(Array.from({ length: 30 }, () => (Math.random() < 0.50 ? 1 : 0)));
 
 
-    // First 60 trials with 80% box probability
+    // First 10 trials with 80% box probability
     
         //30 trails with 75% Cue probability
-        generateArrays(24,6,23,7);
+        generateArrays(8,2,7,3);
         //console.log(tempArray,cueArray);
 
-        //15 trails with 80% Cue probability
-        generateArrays(12, 3, 12, 3);
-        //console.log(tempArray,cueArray);
-    
-
-        //15 trials with 20% Cue probability
-        generateArrays(12, 3, 3, 12);
         
-    // 20 trials with 20% box probability
+    // 10 trials with 20% box probability
 
-        //  15 trials with 80% Cue probability
-        generateArrays(3, 12, 12, 3);
+        //  5 trials with 80% Cue probability
+        generateArrays(1,4,4,1);
        
         // 5 trials with 20% Cue probability
 
         generateArrays(1, 4, 1, 4);
         
 
-    // 20 trials with 80% box probability
-        // 10 trials with 20% Cue probability
-        generateArrays(8, 2, 2, 8);
+    // 10 trials with 80% box probability
+        // 5 trials with 80% Cue probability
+        generateArrays(4,1,4,1);
         
 
-        // 10 trials with 15% Cue probability
-        generateArrays(8, 2, 1, 9);
+        // 5 trials with 20% Cue probability
+        generateArrays(4,1,1,4);
         
-    // 20 trials with 20% box probability
-        // 20 trials 15% Cue probability
-       generateArrays(16, 4, 4, 16);
+    // 10 trials with 20% box probability
+        // 10 trials 15% Cue probability
+       generateArrays(2,8,1,9);
        //console.log(tempArray,cueArray);
     
     
@@ -237,13 +228,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1"){
                             setTimeout(() => {
                                 arrow.src = cueArray[blockTrails]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
-                            }, 2500);
+                            }, 1000);
                             }
                             else if((exp_no==="0" && blockTrails>20) || exp_no=="2")
                             {
                                 setTimeout(() => {
                                     arrow.src = cueArray[blockTrails+1]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
-                                }, 2500);
+                                }, 1000);
     
                             }
                             arrow.style.visibility = "visible";
@@ -300,13 +291,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1"){
                             setTimeout(() => {
                                 arrow.src = cueArray[blockTrails]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
-                            }, 2500);
+                            }, 1000);
                             }
                             else if((exp_no==="0" && blockTrails>20) || exp_no=="2")
                             {
                                 setTimeout(() => {
                                     arrow.src = cueArray[blockTrails+1]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
-                                }, 2500);
+                                }, 1000);
     
                             }
                         arrow.style.visibility = "visible";
@@ -318,34 +309,33 @@ document.addEventListener('DOMContentLoaded', function () {
                     }, 1000);
                 }
             }
-            if (blockTrails <= 59) {
+
+            
+            if (blockTrails <= 9) {
                 boxProbability = 0.8;
-                if (blockTrails <= 29) {
-                    cueProbability = 0.75;
-                } else if (blockTrails > 29 && blockTrails <= 44) {
-                    cueProbability = 0.8;
-                } else {
-                    cueProbability = 0.2;
-                }
-            } else if (blockTrails <= 79) {
+                cueProbability = 0.75;
+                
+            } else if (blockTrails <= 19) {
                 boxProbability = 0.2;
-                if (blockTrails <= 74) {
+                if (blockTrails <= 14) {
+                    cueProbability = 0.8;
+                }
+                 else {
+                    cueProbability = 0.2;
+                }
+            } else if (blockTrails <= 29) {
+                boxProbability = 0.8;
+                if (blockTrails <= 24) {
                     cueProbability = 0.8;
                 } else {
                     cueProbability = 0.2;
                 }
-            } else if (blockTrails <= 99) {
-                boxProbability = 0.8;
-                if (blockTrails <= 89) {
-                    cueProbability = 0.2;
-                } else {
-                    cueProbability = 0.15;
-                }
-            } else if (blockTrails <= 119) {
+            } else if (blockTrails <= 39) {
                 boxProbability = 0.2;
                 cueProbability = 0.15;
             }
-        
+
+
 
             
 

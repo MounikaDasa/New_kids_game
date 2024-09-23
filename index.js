@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const arrow = document.getElementById('arrow');
     
     let remainingTrials = 0;
+    let src=0;
     let trialStartTime;
     let blockTrails = 0;
     let cue = 0;
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let boxProbability = 0;
     let cueProbability = 0;
     
-    let tempArray = [];
+    let leftDoorArray = [];
     let cueArray = [];
     let boxArr = [];
     let cueArr = [];
@@ -43,28 +44,21 @@ document.addEventListener('DOMContentLoaded', function () {
         // Function to generate an array with specified number of ones and zeroes
       
 
-        function generateArray(n, m) {
-            const array = Array(n).fill(1).concat(Array(m).fill(0));
+        function generateArray(o,p) {
+            const array = Array(o).fill(1).concat(Array(p).fill(0));
             const arrayC = array.sort(() => Math.random() - 0.5); 
-            //console.log(arrayC);   
-
             return arrayC;
             
         }
     
-        
-       
-        let tempArr = generateArray(k, l);
-       
-        tempArray=[...tempArray,...tempArr]
-
-        //return { boxArray1, cueArr };
+        let tempArr = generateArray(m, n);
+        leftDoorArray=[...leftDoorArray,...tempArr]
+        let cueArr = generateArray(k,l);
+        cueArray=[...cueArray,...cueArr]
 
     }
     
     // Usage example
-    
-
     // First 30 trials with 50% probability
     // randomArray = randomArray.concat(Array.from({ length: 30 }, () => (Math.random() < 0.50 ? 1 : 0)));
 
@@ -73,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
         //30 trails with 75% Cue probability
         generateArrays(24,6,23,7);
-        //console.log(tempArray,cueArray);
+        //console.log(leftDoorArray,cueArray);
 
         
     // 10 trials with 80% box probability
@@ -91,9 +85,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // 10 trials with 20% box probability
         // 10 trials with 20% Cue probability
         generateArrays(2,8,2,8);
-        
-
     
+
     
     playButton.addEventListener('click', startGame);
     stopButton.addEventListener('click', stopGame);
@@ -101,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function stopGame() {
 
-        tempArray=[]
+        leftDoorArray=[]
         alert('Experiment completed!');
             setTimeout(() => {
                 downloadExcel(userName+"_"+pid+"_"+exp_no);
@@ -110,35 +103,46 @@ document.addEventListener('DOMContentLoaded', function () {
  
     
     function startGame() {
-        // console.log('Game is starting...');
+        // Initialize the trial start time and hide the play button
         trialStartTime = new Date().getTime();
         playButton.style.visibility = "hidden";
-           
-        if(exp_no==='1' || exp_no==='2'){
+        //console.log(cueArray[blockTrails],leftDoorArray[blockTrails])
+    
+        // Function to set the arrow source based on experiment number and condition
+        function setArrowSource(condition) {
+            const images = condition === 1 
+            ? ['./assets/images/leftarrow.png', './assets/images/rightarrow.png'] 
+            : ['./assets/images/smileL.png', './assets/images/smileR.png'];
         
-            if(exp_no==='1'){
-                arrow.src = tempArray[blockTrails]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png'; 
-            }
-            else{
-                arrow.src = tempArray[blockTrails]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
+        arrow.src = cueArray[blockTrails] === leftDoorArray[blockTrails] ? images[0] : images[1];
+        
+        }
+    
+        // Check if the experiment involves shifting elements
+        if (exp_no === '1b' || exp_no === '2b') {
+            // Shift the first 40 elements after the last 30 elements
+            cueArray = cueArray.slice(-40).concat(cueArray.slice(0, 30));
+        }
+        console.log(cueArray)
+        console.log(leftDoorArray)
 
-            }
-            
-    }
-     
-        door1.addEventListener('click',
-            
-            handleDoorClick);
+        // Determine the arrow source based on the experiment number
+        setArrowSource(exp_no.startsWith('1') ? 1 : 2);
+
+    
+        // Add event listeners for door clicks
+        door1.addEventListener('click', handleDoorClick);
         door2.addEventListener('click', handleDoorClick);
+    
         // Reset cue at the beginning of each trial
-        
         cue = 0;
     }
+    
 
     function handleDoorClick(event) {
       
      
-        if (blockTrails < tempArray.length) {
+        if (blockTrails < leftDoorArray.length) {
             const reactionTime = new Date().getTime() - trialStartTime;
           
             const doorNumber = event.target.getAttribute('data-door-number');
@@ -151,136 +155,111 @@ document.addEventListener('DOMContentLoaded', function () {
             door2.removeEventListener('click', handleDoorClick);
             
             let reward = 10;
-            
-            if(doorNumber === "2"){
-               
-                if(tempArray[blockTrails] ===1){
-                    reward=1
+            //console.log(cueArray[blockTrails+1],leftDoorArray[blockTrails+1])
+            if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1a" || exp_no=="1b")
+                {
+                setTimeout(() => {
+                src  = cueArray[blockTrails] === leftDoorArray[blockTrails] ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
+                arrow.src=src
+            }, 2500);
+               // console.log(src)
+                }
+            else if((exp_no==="0" && blockTrails>20) || exp_no=="2a" || exp_no=="2b")
+                {       
                     setTimeout(() => {
-                        let randomGift = gifts[Math.floor(Math.random() * gifts.length)];           
-                        event.target.src = './assets/images/' + randomGift + '.gif';
-                        yay.play();
-                        // This line will execute after the timeout
-                        setTimeout(() => {
-                            event.target.src = './assets/images/GF.png';
-                        }, 2500);
-                        if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1"){
-                        setTimeout(() => {
-                            arrow.src = tempArray[blockTrails+1]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
-                        }, 2500);
-                        }
-                        else if((exp_no==="0" && blockTrails>20) || exp_no=="2")
+                    src = cueArray[blockTrails] === leftDoorArray[blockTrails] ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
+                    arrow.src=src
+                }, 2500);
+                    //console.log(src)
+                }
+            
+            if(doorNumber === "2")
+                {
+                    if(leftDoorArray[blockTrails] ===1)
+                    {   reward=1
+                        setTimeout(() => 
                         {
-                            
-                            setTimeout(() => {
-                                arrow.src = tempArray[blockTrails+1]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
-                            }, 2500);
-
-                        }
-                        arrow.style.visibility = "visible";
-                        setTimeout(() => {
-                            door1.addEventListener('click', handleDoorClick);
-                            door2.addEventListener('click', handleDoorClick);
-                        }, 2500);
-                        
-                        trialStartTime = new Date().getTime();
-                    }, 1200); 
-                }                
-                else{
-                    reward=0
-                    setTimeout(() => {          
-                        event.target.src = './assets/images/S.png';
-
-                        // This line will execute after the timeout
-                        setTimeout(() => {
-                            event.target.src = './assets/images/GF.png';
-                        }, 600);
-                        if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1"){
-                            setTimeout(() => {
-                                arrow.src = tempArray[blockTrails+1]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
-                            }, 1000);
-                            }
-                            else if((exp_no==="0" && blockTrails>20) || exp_no=="2")
-                            {
-                                setTimeout(() => {
-                                    arrow.src = tempArray[blockTrails+1]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
-                                }, 1000);
-    
-                            }
-                            arrow.style.visibility = "visible";
-                        setTimeout(() => {
-                            door1.addEventListener('click', handleDoorClick);
-                            door2.addEventListener('click', handleDoorClick);
-                        }, 2500);
-                        trialStartTime = new Date().getTime();
-                    }, 1000);
-                }
-            }
-
-            else{
-                if(tempArray[blockTrails] ===1){
-                    reward=1
-                    setTimeout(() => {
                         let randomGift = gifts[Math.floor(Math.random() * gifts.length)];           
                         event.target.src = './assets/images/' + randomGift + '.gif';
                         yay.play();
                         // This line will execute after the timeout
+                        setTimeout(() => {event.target.src = './assets/images/GF.png'; }, 2500);
+                       
+                        arrow.style.visibility = "visible";
                         setTimeout(() => {
-                            event.target.src = './assets/images/GF.png';
-                        }, 2500);
-                        if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1"){
-                            setTimeout(() => {
-                                arrow.src = tempArray[blockTrails+1]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
-                            }, 2500);
-                            }
-                            else if((exp_no==="0" && blockTrails>20) || exp_no=="2")
-                            {
-                                setTimeout(() => {
-                                    arrow.src = tempArray[blockTrails+1]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
+                            door1.addEventListener('click', handleDoorClick);
+                            door2.addEventListener('click', handleDoorClick);
                                 }, 2500);
+                        trialStartTime = new Date().getTime();
+                        }, 1200); 
+                    }                
+                    else
+                    {
+                        reward=0
+                        setTimeout(() => 
+                        {          
+                        event.target.src = './assets/images/S.png';
     
-                            }
+                        // This line will execute after the timeout
+                        setTimeout(() => 
+                            {
+                            event.target.src = './assets/images/GF.png';
+                            }, 600);
                             arrow.style.visibility = "visible";
                         setTimeout(() => {
                             door1.addEventListener('click', handleDoorClick);
                             door2.addEventListener('click', handleDoorClick);
                         }, 2500);
-                        
                         trialStartTime = new Date().getTime();
-                    }, 1200); 
-                }                
-                else{
-                    reward=0
-                    setTimeout(() => {          
-                        event.target.src = './assets/images/S.png';
-
-                        // This line will execute after the timeout
-                        setTimeout(() => {
-                            event.target.src = './assets/images/GF.png';
-                        }, 600);
-                        if((exp_no==="0" && blockTrails>10 && blockTrails<20) || exp_no=="1"){
-                            setTimeout(() => {
-                                arrow.src = tempArray[blockTrails+1]===1 ? './assets/images/leftarrow.png' : './assets/images/rightarrow.png';  
-                            }, 1000);
-                            }
-                            else if((exp_no==="0" && blockTrails>20) || exp_no=="2")
-                            {
-                                setTimeout(() => {
-                                    arrow.src = tempArray[blockTrails+1]===1 ? './assets/images/smileL.png' : './assets/images/smileR.png'; 
-                                }, 1000);
-    
-                            }
-                        arrow.style.visibility = "visible";
-                        setTimeout(() => {
-                            door1.addEventListener('click', handleDoorClick);
-                            door2.addEventListener('click', handleDoorClick);
-                        }, 2500);
-                        trialStartTime = new Date().getTime();
-                    }, 1000);
+                        }, 1000);
+                    }
                 }
-            }
+    
+                else{
+                    if(leftDoorArray[blockTrails] ===0){
+                        reward=1
+                        setTimeout(() => {
+                            let randomGift = gifts[Math.floor(Math.random() * gifts.length)];           
+                            event.target.src = './assets/images/' + randomGift + '.gif';
+                            yay.play();
+                            // This line will execute after the timeout
+                            setTimeout(() => {
+                                event.target.src = './assets/images/GF.png';
+                            }, 2500);
+                        
+                                arrow.style.visibility = "visible";
+                            setTimeout(() => {
+                                door1.addEventListener('click', handleDoorClick);
+                                door2.addEventListener('click', handleDoorClick);
+                            }, 2500);
+                            
+                            trialStartTime = new Date().getTime();
+                        }, 1200); 
+                    }                
+                    else{
+                        reward=0
+                        setTimeout(() => {          
+                            event.target.src = './assets/images/S.png';
+    
+                            // This line will execute after the timeout
+                            setTimeout(() => {
+                                event.target.src = './assets/images/GF.png';
+                            }, 600);
+                            arrow.style.visibility = "visible";
+                            setTimeout(() => {
+                                door1.addEventListener('click', handleDoorClick);
+                                door2.addEventListener('click', handleDoorClick);
+                            }, 2500);
+                            trialStartTime = new Date().getTime();
+                        }, 1000);
+                    }
+                }
+            
 
             
+
+            if( exp_no=="0" || exp_no=="1a" || exp_no=="2a")
+            {
             if (blockTrails <= 29) {
                 boxProbability = 0.8;
                 cueProbability = 0.75;
@@ -302,17 +281,39 @@ document.addEventListener('DOMContentLoaded', function () {
                 boxProbability = 0.2;
                 cueProbability = 0.2;
              } 
+            }
+            else{
+                 if (blockTrails <= 9) {
+                    boxProbability = 0.8;
+                    cueProbability = 0.8;
+                 } 
+                else if (blockTrails <= 19) {
+                    boxProbability = 0.2;
+                    cueProbability = 0.2;
+                 } 
+                else if (blockTrails <= 29) {
+                    boxProbability = 0.8;
+                    cueProbability = 0.8;
+                 } 
+                else if (blockTrails <= 39) {
+                    boxProbability = 0.2;
+                    cueProbability = 0.2;
+                 }
+                else if (blockTrails <= 69) {
+                    boxProbability = 0.8;
+                    cueProbability = 0.75;
+                    
+                } 
 
+            }
 
-
-            
-
-            //console.log("ChoosedBox:",doorNumber === "2"?"Left":"Right","CueShowed:",tempArray[blockTrails],tempArray[blockTrails]===1?"Left":"Right","RewardBox:",tempArray[blockTrails] ===1?"Left":"Right", " Rewards:", reward, boxProbability, cueProbability );
-            experimentRecords.push({TrailNo:blockTrails+1,ChoosedBox:doorNumber === "2"?"Left":"Right",CueShowed:tempArray[blockTrails]===1?"Left":"Right", RewardBox:tempArray[blockTrails] ===1?"Left":"Right",Rewards: reward, ReactionTime: reactionTime / 100, BoxProb: boxProbability, CueProb: cueProbability });
+            console.log("ChoosedBox:",doorNumber === "2"?"Left":"Right","CueShowed:",cueArray[blockTrails] === leftDoorArray[blockTrails] ? "Left":"Right","RewardBox:",leftDoorArray[blockTrails] ===1?"Left":"Right", " Rewards:", reward, boxProbability, cueProbability );
+            experimentRecords.push({TrailNo:blockTrails+1,ChoosedBox:doorNumber === "2"?"Left":"Right",CueShowed:cueArray[blockTrails] === leftDoorArray[blockTrails] ? "Left":"Right", RewardBox:leftDoorArray[blockTrails] ===1?"Left":"Right",Rewards: reward, ReactionTime: reactionTime / 100, BoxProb: boxProbability, CueProb: cueProbability });
             
             blockTrails++;
    
-        } else {
+        } 
+        else {
             alert('Experiment completed!');
             setTimeout(() => {
                 downloadExcel(userName+"_"+pid+"_"+exp_no);
